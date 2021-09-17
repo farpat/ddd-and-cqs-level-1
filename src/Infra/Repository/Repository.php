@@ -2,19 +2,16 @@
 
 namespace App\Infra\Repository;
 
-use App\Infra\Interfaces\EntityInterface;
+use PDO;
 
 class Repository
 {
-    /**
-     * @var \PDO
-     */
-    private \PDO $pdo;
+    private PDO $pdo;
 
-    public function __construct (\PDO $pdo)
+    public function __construct (PDO $pdo)
     {
-        $pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
-        $pdo->setAttribute(\PDO::ATTR_DEFAULT_FETCH_MODE, \PDO::FETCH_ASSOC);
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
         $this->pdo = $pdo;
     }
 
@@ -26,7 +23,7 @@ class Repository
         $values = ':' . implode(', :', $keys);
 
         $this->pdo
-            ->prepare("INSERT INTO {$table} ($parameters) VALUES ($values)")
+            ->prepare("INSERT INTO $table ($parameters) VALUES ($values)")
             ->execute($data);
 
         $data['id'] = $this->pdo->lastInsertId();

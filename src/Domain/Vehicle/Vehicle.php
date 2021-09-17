@@ -24,26 +24,17 @@ class Vehicle
         return $this->name;
     }
 
-    /**
-     * @return Location|null
-     */
     public function getLocation (): ?Location
     {
         return $this->location;
     }
 
-    /**
-     * @param int $id
-     */
     public function setId (int $id): Vehicle
     {
         $this->id = $id;
         return $this;
     }
 
-    /**
-     * @param string $name
-     */
     public function setName (string $name): Vehicle
     {
         $this->name = $name;

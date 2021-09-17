@@ -6,17 +6,12 @@ use App\Domain\Vehicle\Fleet;
 use App\Domain\Vehicle\Location;
 use App\Domain\Vehicle\Vehicle;
 use App\Infra\Repository\Repository;
+use PDO;
 
 trait DatabaseTestCase
 {
-    /**
-     * @var Repository
-     */
-    protected $repository;
-    /**
-     * @var \PDO
-     */
-    protected $pdo;
+    protected Repository $repository;
+    protected ?PDO $pdo = null;
 
     public function makeFleet ($data): Fleet
     {
@@ -66,7 +61,7 @@ trait DatabaseTestCase
         parent::setUp();
 
         if ($this->pdo === null) {
-            $this->repository = new Repository($this->pdo = new \PDO('sqlite::memory:'));
+            $this->repository = new Repository($this->pdo = new PDO('sqlite::memory:'));
 
             $this->pdo->exec(<<<SQL
 CREATE table locations (

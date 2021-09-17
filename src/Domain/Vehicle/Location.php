@@ -2,8 +2,6 @@
 
 namespace App\Domain\Vehicle;
 
-use App\Infra\Interfaces\Comparable;
-
 class Location
 {
     private int $id;

@@ -9,30 +9,30 @@ use App\Application\Handler\ParkVehicleHandler;
 use App\Application\Handler\RegisterVehicleHandler;
 use App\Domain\Vehicle\Fleet;
 use App\Domain\Vehicle\Vehicle;
+use Exception;
 use PHPUnit\Framework\TestCase;
 
 class ParkVehicleTest extends TestCase
 {
     use DatabaseTestCase;
 
-    private Fleet $fleet;
     private Vehicle $vehicle;
 
     protected function setUp (): void
     {
         $this->setUpDatabase();
 
-        $this->fleet = $this->makeFleet(['name' => 'my fleet']);
+        $fleet = $this->makeFleet(['name' => 'my fleet']);
         $this->vehicle = $this->makeVehicle(['name' => 'a vehicle']);
         $this->assertCount(1, $this->repository->read('fleets'));
         $this->assertCount(1, $this->repository->read('vehicles'));
 
-        $registerCommand = new RegisterVehicleCommand($this->fleet, $this->vehicle);
+        $registerCommand = new RegisterVehicleCommand($fleet, $this->vehicle);
         (new RegisterVehicleHandler($this->repository))->handle($registerCommand);
 
         $registrations = $this->repository->read("fleets_vehicles");
         $this->assertCount(1, $registrations);
-        $this->assertEquals($this->fleet->getId(), $registrations[0]['fleet_id']);
+        $this->assertEquals($fleet->getId(), $registrations[0]['fleet_id']);
     }
 
     /** @test */
@@ -64,7 +64,7 @@ class ParkVehicleTest extends TestCase
         (new ParkVehicleHandler($this->repository))->handle($parkCommand);
 
         //then
-        $this->expectException(\Exception::class);
+        $this->expectException(Exception::class);
         (new ParkVehicleHandler($this->repository))->handle($parkCommand);
     }
 }

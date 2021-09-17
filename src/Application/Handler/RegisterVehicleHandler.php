@@ -4,6 +4,7 @@ namespace App\Application\Handler;
 
 use App\Application\Command\RegisterVehicleCommand;
 use App\Infra\Repository\Repository;
+use Exception;
 
 class RegisterVehicleHandler
 {
@@ -17,6 +18,9 @@ class RegisterVehicleHandler
         $this->repository = $repository;
     }
 
+    /**
+     * @throws Exception
+     */
     public function handle (RegisterVehicleCommand $command)
     {
         $registration = $this->repository->read('fleets_vehicles', [
@@ -25,7 +29,7 @@ class RegisterVehicleHandler
         ]);
 
         if (!empty($registration)) {
-            throw new \Exception("The vehicle << {$command->getVehicleToRegister()->getName()} >> has already been registered into the fleet << {$command->getFleet()->getName()} >>");
+            throw new Exception("The vehicle << {$command->getVehicleToRegister()->getName()} >> has already been registered into the fleet << {$command->getFleet()->getName()} >>");
         }
 
         $this->repository->create('fleets_vehicles', [

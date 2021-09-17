@@ -5,6 +5,7 @@ namespace Tests;
 
 use App\Application\Command\RegisterVehicleCommand;
 use App\Application\Handler\RegisterVehicleHandler;
+use Exception;
 use PHPUnit\Framework\TestCase;
 
 class RegisterVehicleTest extends TestCase
@@ -49,7 +50,7 @@ class RegisterVehicleTest extends TestCase
         (new RegisterVehicleHandler($this->repository))->handle($registerCommand);
 
         //then
-        $this->expectException(\Exception::class);
+        $this->expectException(Exception::class);
         (new RegisterVehicleHandler($this->repository))->handle($registerCommand);
     }
 
